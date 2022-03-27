@@ -53,10 +53,10 @@
     <UnityVersion>2020.3.19f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Hero.cs" />
     <Compile Include="Assets\ScemeManager.cs" />
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\asset\Scripts\Charactermanager.cs" />
-    <Compile Include="Assets\Hero.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
