@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum State
-{
-    idle,
-    run, 
-    jump 
-}
-public enum Dirction
+
+public enum Direction
 {
     left,
     right,
@@ -16,11 +11,20 @@ public enum Dirction
 
 public class Hero : MonoBehaviour
 {
+    public enum State
+    {
+        idle,
+        walk,
+        jump,
+        attack,
+        hit
+    }
+
     State state = State.idle;  //이벤트(순간), 상태(지속)
 
     public float speed = 3;
     public float jumppower = 10;
-    public Dirction direction = Dirction.left;
+    public Direction direction = Direction.left;
     public Rigidbody rb;
     public SpriteRenderer sp_renderer;
     public Animator animator;
@@ -34,19 +38,19 @@ public class Hero : MonoBehaviour
     {
         State_Update();
 
-        if (state == State.run || state != State.jump)
+        if (state == State.walk || state != State.jump)
         {
             if (Input.GetKey(KeyCode.A))
             {
-                direction = Dirction.left;
-                State_Start(State.run);
+                direction = Direction.left;
+                State_Start(State.walk);
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                direction = Dirction.right;
-                State_Start(State.run);
+                direction = Direction.right;
+                State_Start(State.walk);
             }
-            else if (state == State.run)
+            else if (state == State.walk)
             {
                 State_Start(State.idle);
             }
@@ -65,7 +69,7 @@ public class Hero : MonoBehaviour
     }
     public void Move()
     {
-        if (state != State.run && state != State.jump) return;
+        if (state != State.walk && state != State.jump) return;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -90,11 +94,20 @@ public class Hero : MonoBehaviour
         switch (state)
         {
             case State.idle:
+                SetAnim("Hero_idle");
                 break;
-            case State.run:
+            case State.walk:
+                SetAnim("Hero_walk");
                 break;
             case State.jump:
+                SetAnim("Hero_jump");
                 rb.AddForce(Vector3.up * jumppower, ForceMode.Impulse);
+                break;
+            case State.attack:
+                
+                break;
+            case State.hit:
+                SetAnim("Hero_hit");
                 break;
         }
     }
@@ -104,9 +117,13 @@ public class Hero : MonoBehaviour
         {
             case State.idle:
                 break;
-            case State.run:
+            case State.walk:
                 break;
             case State.jump:
+                break;
+            case State.attack:
+                break;
+            case State.hit:
                 break;
         }
 
@@ -116,6 +133,10 @@ public class Hero : MonoBehaviour
         if(collision.gameObject.name.Contains("ground"))
         {
             State_Start(State.idle);
+        }
+        if (collision.gameObject.name.Contains("enemy"))
+        {
+            State_Start(State.hit);
         }
     }
 }
