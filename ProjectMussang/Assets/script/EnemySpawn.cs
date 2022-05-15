@@ -8,12 +8,12 @@ public class EnemySpawn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(enemy1, transform);
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Instantiate(enemy1, transform);
     }
 }

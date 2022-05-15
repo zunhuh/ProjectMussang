@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum Direction
@@ -20,6 +21,12 @@ public class Hero : MonoBehaviour
         hit
     }
 
+    //스탯
+    int MaxHp = 100;
+    int CurHp = 100;
+    public int atk = 50;
+    
+
     State state = State.idle;  //이벤트(순간), 상태(지속)
     float stateTime = 0;
     public float speed = 3;
@@ -29,6 +36,8 @@ public class Hero : MonoBehaviour
     public SpriteRenderer sp_renderer;
     public Animator animator;
     public GameObject weapon;
+    public Slider hp_bar;
+    public Mission mission;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +46,7 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        hp_bar.value = (float) CurHp / MaxHp;
         State_Update();
         Attack();
         Jump();
@@ -63,8 +73,6 @@ public class Hero : MonoBehaviour
 
     void Attack()
     {
-        if (state == State.jump) return;
-        if (state == State.hit) return;
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -74,7 +82,7 @@ public class Hero : MonoBehaviour
 
     void Jump()
     {
-        if (state == State.attack) return;
+       
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -109,7 +117,7 @@ public class Hero : MonoBehaviour
         animator.Play(s);
     }
 
-    public void State_Start(State _state)   //state 변경 //이벤트
+    public void State_Start(State _state, int _param = 0)   //state 변경 //이벤트
     {
         switch (state)
         {
@@ -118,6 +126,8 @@ public class Hero : MonoBehaviour
             case State.walk:
                 break;
             case State.jump:
+                if (_state == State.attack) return;
+                if (_state == State.jump) return;
                 break;
             case State.attack:
                 if (_state == State.walk) return;
@@ -155,6 +165,7 @@ public class Hero : MonoBehaviour
                 stateTime = Time.time + 0.5f;
                 break;
             case State.hit:
+                CurHp -= _param;
                 SetAnim("Hero_hit");
                 stateTime = Time.time + 0.5f;
                 break;
@@ -186,8 +197,9 @@ public class Hero : MonoBehaviour
             State_Start(State.idle);
         }
         if (collision.gameObject.name.Contains("enemy"))
-        {
-            State_Start(State.hit);
+        {            
+            int e_atk = collision.gameObject.GetComponent<Enemy>().atk;
+            State_Start(State.hit, e_atk);
         }
     }
 }

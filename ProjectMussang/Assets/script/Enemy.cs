@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    //스탯
+    int MaxHp = 100;
+    int CurHp =100;
+    public int atk = 20;
+
     public Rigidbody rb;
     public Animator animator;
     public SpriteRenderer sp_renderer;
@@ -15,7 +20,9 @@ public class Enemy : MonoBehaviour
     {
         idle,
         walk,
-        hit
+        attack,
+        hit,
+        die
     }
 
     State state = State.idle;
@@ -48,7 +55,7 @@ public class Enemy : MonoBehaviour
         if (direction == Direction.right) rb.MovePosition(transform.position + speed * Vector3.right * Time.deltaTime);
     }
 
-    public void State_Start(State _state)   //state 변경 //이벤트
+    public void State_Start(State _state, int _param = 0)   //state 변경 //이벤트
     {
         state = _state;
         switch (state)
@@ -57,11 +64,20 @@ public class Enemy : MonoBehaviour
                 SetAnim("e1_idle");
                 break;
             case State.walk:
-                SetAnim("e1_walk"); SetDirection(target.transform.position);
+                speed = 2; SetDirection(target.transform.position);
+                SetAnim("e1_walk"); 
+                break;
+            case State.attack:
+                speed = 5;
+                SetAnim("e1_attack"); 
+                 
                 break;
             case State.hit:
-                Debug.Log("A");
+                CurHp -= _param; if (CurHp <= 0) { State_Start(State.die); break; }
                 SetAnim("e1_hit"); stateTime = Time.time + 0.5f;
+                break;
+            case State.die:
+                Destroy(this.gameObject); target.GetComponent<Hero>().mission.wall.count -= 1;
                 break;
         }
     }
@@ -70,23 +86,30 @@ public class Enemy : MonoBehaviour
         switch (state)
         {
             case State.idle:
-                if (Vector3.Distance(transform.position, target.transform.position) < 6) State_Start(State.walk);
+                if (Vector3.Distance(transform.position, target.transform.position) < 5) State_Start(State.walk);
                 break;
             case State.walk:
-                Move(); if (Vector3.Distance(transform.position, target.transform.position) > 9) State_Start(State.idle);
+                 Move(); if (Vector3.Distance(transform.position, target.transform.position) > 5) State_Start(State.idle);
+                if (Vector3.Distance(transform.position, target.transform.position) < 2) State_Start(State.attack);
+                break;
+            case State.attack:
+                Move(); if (Vector3.Distance(transform.position, target.transform.position) > 3) State_Start(State.idle);
                 break;
             case State.hit:
                 if (stateTime < Time.time) State_Start(State.idle);
                 break;
+            case State.die:
+
+                break;
         }
 
     }
-    private void OnTriggerStay(Collider col)
+    private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.name.Contains("weapon"))
         {
-            print("aaa");
-            State_Start(State.hit);
+            int dag = target.gameObject.GetComponent<Hero>().atk;
+            State_Start(State.hit, dag);
         }
     }
 }
