@@ -59,8 +59,9 @@
     <Compile Include="Assets\script\Hero.cs" />
     <Compile Include="Assets\script\ScemeManager.cs" />
     <Compile Include="Assets\script\GameManager.cs" />
-    <Compile Include="Assets\Enemy.cs" />
-    <Compile Include="Assets\EnemySpawn.cs" />
+    <Compile Include="Assets\script\Enemy.cs" />
+    <Compile Include="Assets\script\EnemySpawn.cs" />
+    <Compile Include="Assets\script\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

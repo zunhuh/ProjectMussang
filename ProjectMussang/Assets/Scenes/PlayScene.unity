@@ -611,6 +611,7 @@ MonoBehaviour:
   rb: {fileID: 1027248689}
   sp_renderer: {fileID: 1370160703}
   animator: {fileID: 1370160702}
+  weapon: {fileID: 2198281764081779593, guid: 8fe65fabc7079f5479beba9f2fa28173, type: 3}
 --- !u!1 &1165524263
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +813,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 4392827059107796345, guid: 40de9a8703e2e5a47882b0b86451c741, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1590,11 +1591,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6058523007555683632, guid: 1af87166c44e13f458df668af8d33f82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.36
+      value: 2.21
       objectReference: {fileID: 0}
     - target: {fileID: 6058523007555683632, guid: 1af87166c44e13f458df668af8d33f82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6058523007555683632, guid: 1af87166c44e13f458df668af8d33f82, type: 3}
       propertyPath: m_LocalPosition.z

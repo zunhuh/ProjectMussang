@@ -21,13 +21,14 @@ public class Hero : MonoBehaviour
     }
 
     State state = State.idle;  //이벤트(순간), 상태(지속)
-
+    float stateTime = 0;
     public float speed = 3;
     public float jumppower = 10;
     public Direction direction = Direction.left;
     public Rigidbody rb;
     public SpriteRenderer sp_renderer;
     public Animator animator;
+    public GameObject weapon;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +38,8 @@ public class Hero : MonoBehaviour
     void Update()
     {
         State_Update();
+        Attack();
+        Jump();
 
         if (state == State.walk || state != State.jump)
         {
@@ -55,6 +58,23 @@ public class Hero : MonoBehaviour
                 State_Start(State.idle);
             }
         }
+ 
+    }
+
+    void Attack()
+    {
+        if (state == State.jump) return;
+        if (state == State.hit) return;
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            State_Start(State.attack);
+        }
+    }
+
+    void Jump()
+    {
+        if (state == State.attack) return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -69,7 +89,7 @@ public class Hero : MonoBehaviour
     }
     public void Move()
     {
-        if (state != State.walk && state != State.jump) return;
+        if (state != State.walk && state != State.jump ) return;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -81,6 +101,7 @@ public class Hero : MonoBehaviour
             sp_renderer.flipX = false;
             rb.MovePosition(transform.position + speed * Vector3.right * Time.deltaTime);
         }
+
     }
 
     public void SetAnim(string s)
@@ -90,7 +111,33 @@ public class Hero : MonoBehaviour
 
     public void State_Start(State _state)   //state 변경 //이벤트
     {
+        switch (state)
+        {
+            case State.idle:
+                break;
+            case State.walk:
+                break;
+            case State.jump:
+                break;
+            case State.attack:
+                if (_state == State.walk) return;
+                if (_state == State.jump) return;
+
+                break;
+            case State.hit:
+                if (_state == State.walk) return;
+                if (_state == State.jump) return;
+                if (_state == State.attack) return;
+                if (_state == State.hit) return;
+                break;
+        }
+        
+
+
+
+
         state = _state;
+        stateTime = Time.time;
         switch (state)
         {
             case State.idle:
@@ -104,10 +151,12 @@ public class Hero : MonoBehaviour
                 rb.AddForce(Vector3.up * jumppower, ForceMode.Impulse);
                 break;
             case State.attack:
-                
+                Instantiate(weapon, transform);
+                stateTime = Time.time + 0.5f;
                 break;
             case State.hit:
                 SetAnim("Hero_hit");
+                stateTime = Time.time + 0.5f;
                 break;
         }
     }
@@ -122,8 +171,10 @@ public class Hero : MonoBehaviour
             case State.jump:
                 break;
             case State.attack:
+                if (Time.time > stateTime) State_Start(State.idle);
                 break;
             case State.hit:
+                if (Time.time > stateTime) State_Start(State.idle);
                 break;
         }
 
