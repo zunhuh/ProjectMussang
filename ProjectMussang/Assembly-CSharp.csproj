@@ -58,12 +58,12 @@
   <ItemGroup>
     <Compile Include="Assets\script\Hero.cs" />
     <Compile Include="Assets\script\ScemeManager.cs" />
-    <Compile Include="Assets\script\GameManager.cs" />
+    <Compile Include="Assets\script\Wall.cs" />
     <Compile Include="Assets\script\Weapon.cs" />
     <Compile Include="Assets\script\Enemy.cs" />
-    <Compile Include="Assets\script\EnemySpawn.cs" />
     <Compile Include="Assets\script\Mission.cs" />
-    <Compile Include="Assets\script\Wall.cs" />
+    <Compile Include="Assets\script\EnemySpawn.cs" />
+    <Compile Include="Assets\script\GameManage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
