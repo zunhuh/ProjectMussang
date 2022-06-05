@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class Door: MonoBehaviour
 {
-    public int count;
-    // Start is called before the first frame update
+    public int count_cur = 0;
+
+    public GameObject enemy;
+
+    public Transform[] spawn_pos;
+
+
+
     void Start()
     {
-        
+        foreach (var pos in spawn_pos)
+        {
+            GameObject go = Instantiate(enemy, pos);
+            go.GetComponent<Enemy>().door = this;
+        }
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (count == 0) {this.gameObject.transform.Translate(0, -1*Time.deltaTime, 0);if (gameObject.transform.position.y <= -3) Destroy(this.gameObject); }
+    {   
+
+        if (count_cur == spawn_pos.Length) Destroy(this.gameObject); 
     }
 }

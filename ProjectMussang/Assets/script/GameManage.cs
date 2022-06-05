@@ -58,7 +58,7 @@ public class GameManage : MonoBehaviour
             overlap_list.Add(map_num);
 
             overlap_b = true;
-            map_num += stage * 1000;
+            map_num += room * 1000;
             GameObject msp_gb = GameObject.Find(map_num.ToString());
             print(map_num);
         }

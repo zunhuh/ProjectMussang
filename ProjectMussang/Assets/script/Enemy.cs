@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public SpriteRenderer sp_renderer;
     public GameObject target;
+    public Door door;
     public float speed;
     float stateTime = 0;
     public enum State
@@ -32,6 +33,7 @@ public class Enemy : MonoBehaviour
     {
         State_Start(State.idle);
         target = GameObject.Find("Hero");
+        
     }
 
     // Update is called once per frame
@@ -77,7 +79,7 @@ public class Enemy : MonoBehaviour
                 SetAnim("e1_hit"); stateTime = Time.time + 0.5f;
                 break;
             case State.die:
-                Destroy(this.gameObject); //
+                door.count_cur += 1; Destroy(this.gameObject); 
                 break;
         }
     }
