@@ -37,7 +37,6 @@ public class Hero : MonoBehaviour
     public Animator animator;
     public GameObject weapon;
     public Slider hp_bar;
-    public Mission mission;
     // Start is called before the first frame update
     void Start()
     {

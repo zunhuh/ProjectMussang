@@ -1,20 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManage : MonoBehaviour
 {
 
+    public Text room_text;
+    private int floor;
+    private int room;
 
-    private int stage;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        floor = 1;
+        room = 1;
+        room_text.text = "stage: "+floor + "-" + room;
         MapSetting(1);
     }
+
+    // 방클리어시 텍스트 변경
+    // 보스 클리어시 씬전환
 
     // Update is called once per frame
     void Update()
@@ -22,7 +31,7 @@ public class GameManage : MonoBehaviour
 
     }
 
-    public void MapSetting(int stage)
+    public void MapSetting(int floor)
     {
         int length = 5;
 

@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
                 SetAnim("e1_hit"); stateTime = Time.time + 0.5f;
                 break;
             case State.die:
-                Destroy(this.gameObject); target.GetComponent<Hero>().mission.wall.count -= 1;
+                Destroy(this.gameObject); //
                 break;
         }
     }
