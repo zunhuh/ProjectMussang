@@ -24,8 +24,10 @@ public class Hero : MonoBehaviour
     //스탯
     int MaxHp = 100;
     int CurHp = 100;
-    public int atk = 50;
-    
+    int atk = 50;
+    int atk_boost = 0;
+    float atk_boost_time;
+       
 
     State state = State.idle;  //이벤트(순간), 상태(지속)
     float stateTime = 0;
@@ -47,6 +49,7 @@ public class Hero : MonoBehaviour
     {
         hp_bar.value = (float) CurHp / MaxHp;
         State_Update();
+        Stat_Update();
         Attack();
         Jump();
 
@@ -189,6 +192,15 @@ public class Hero : MonoBehaviour
         }
 
     }
+    public void Stat_Update()
+    {
+        atk_boost_time -= 1*Time.deltaTime;
+        if (atk_boost_time <= 0) atk_boost = 0;
+    }
+    public int Attack_Power()
+    {
+        return atk + atk_boost;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.name.Contains("ground"))
@@ -199,6 +211,27 @@ public class Hero : MonoBehaviour
         {            
             int e_atk = collision.gameObject.GetComponent<Enemy>().atk;
             State_Start(State.hit, e_atk);
+        }
+    }
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.tag == "item")
+        {
+            Item item = col.GetComponent<Item>();
+            switch (item.item_index)
+            {
+                case (int)ItemType.hp_potion:
+                    CurHp = CurHp + (int)(MaxHp * 0.5f);
+                    if (CurHp > MaxHp) CurHp = MaxHp;
+                    
+
+                    break;
+                case (int)ItemType.power_potion:
+                    if (atk_boost_time == 0) atk_boost += (int)(atk * 0.5f);
+                    atk_boost_time += 60;
+                    break;
+            }
+            Destroy(col.gameObject);
         }
     }
 }

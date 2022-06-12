@@ -110,7 +110,7 @@ public class Enemy : MonoBehaviour
     {
         if (col.gameObject.name.Contains("weapon"))
         {
-            int dag = target.gameObject.GetComponent<Hero>().atk;
+            int dag = target.gameObject.GetComponent<Hero>().Attack_Power();
             State_Start(State.hit, dag);
         }
     }
