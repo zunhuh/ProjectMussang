@@ -9,6 +9,7 @@ public class GameManage : MonoBehaviour
     public Text room_text;
     private int floor;
     private int room;
+    public Slider hp_bar;
 
 
 
@@ -16,6 +17,10 @@ public class GameManage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hp_bar.gameObject.SetActive(false);
+        //보스등장시
+        hp_bar.gameObject.SetActive(true);
+
         floor = 1;
         room = 1;
         room_text.text = "stage: "+floor + "-" + room;
@@ -29,6 +34,11 @@ public class GameManage : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void Boss_hp(float a)
+    { 
+        hp_bar.value = a;
     }
 
     public void MapSetting(int floor)

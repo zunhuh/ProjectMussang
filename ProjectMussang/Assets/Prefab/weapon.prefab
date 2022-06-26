@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2198281764081779591}
   - component: {fileID: 629067005921797069}
   - component: {fileID: 1128068313893532065}
-  - component: {fileID: -6335926814202446852}
   m_Layer: 0
   m_Name: weapon
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2198281764081779593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 4}
+  m_LocalScale: {x: 5, y: 5, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -97,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc1b4663697b4a42b5f857eb67c4a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hero: {fileID: 0}
 --- !u!95 &1128068313893532065
 Animator:
   serializedVersion: 3
@@ -107,7 +107,7 @@ Animator:
   m_GameObject: {fileID: 2198281764081779593}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0829bf314d4b2cb479f93d979159e494, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -116,16 +116,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!135 &-6335926814202446852
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2198281764081779593}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.10549611
-  m_Center: {x: -0.045916885, y: 0.043872297, z: 0}

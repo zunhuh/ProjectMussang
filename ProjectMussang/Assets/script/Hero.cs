@@ -32,10 +32,12 @@ public enum Direction
     public Animator animator;
     public GameObject weapon;
     public Slider hp_bar;
+    public BlinkDamage blinkDamage;
 
     // Start is called before the first frame update
     void Start()
     {
+
     }
 
     void Update()
@@ -45,10 +47,7 @@ public enum Direction
         Attack();
         Jump();
         Stat_Update();
-        
 
-        if (state == State.walk || state != State.jump)
-        {
             if (Input.GetKey(KeyCode.A))
             {
                 direction = Direction.left;
@@ -63,14 +62,12 @@ public enum Direction
             {
                 State_Start(State.idle);
             }
-        }
- 
     }
 
     void Attack()
     {
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) )
         {
             State_Start(State.attack);
         }
@@ -127,13 +124,14 @@ public enum Direction
                 break;
             case State.attack:
                 if (_state == State.walk) return;
+                if (_state == State.attack) return;
                 if (_state == State.jump) return;
+                if (_state == State.hit) return;
 
                 break;
             case State.hit:
                 if (_state == State.walk) return;
                 if (_state == State.jump) return;
-                if (_state == State.attack) return;
                 if (_state == State.hit) return;
                 break;
         }
@@ -157,10 +155,12 @@ public enum Direction
                 rb.AddForce(Vector3.up * jumppower, ForceMode.Impulse);
                 break;
             case State.attack:
-                Instantiate(weapon, transform);
-                stateTime = Time.time + 0.5f;
+                
+                Instantiate(weapon, transform) ;
+                stateTime = Time.time + 1.5f;
                 break;
             case State.hit:
+                blinkDamage.Blink_start();
                 CurHp -= _param;
                 SetAnim("Hero_hit");
                 stateTime = Time.time + 0.5f;
@@ -199,6 +199,11 @@ public enum Direction
         if (collision.gameObject.name.Contains("enemy"))
         {            
             int e_atk = collision.gameObject.GetComponent<Enemy>().atk;
+            State_Start(State.hit, e_atk);
+        }
+        if (collision.gameObject.name.Contains("boss1"))
+        {
+            int e_atk = collision.gameObject.GetComponent<Boss>().atk;
             State_Start(State.hit, e_atk);
         }
     }

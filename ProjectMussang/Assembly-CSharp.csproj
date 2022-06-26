@@ -59,12 +59,13 @@
     <Compile Include="Assets\script\HeroStat.cs" />
     <Compile Include="Assets\script\Hero.cs" />
     <Compile Include="Assets\script\ScemeManager.cs" />
+    <Compile Include="Assets\Boss.cs" />
     <Compile Include="Assets\script\Door.cs" />
     <Compile Include="Assets\script\Item.cs" />
     <Compile Include="Assets\script\Weapon.cs" />
     <Compile Include="Assets\script\GameManage.cs" />
     <Compile Include="Assets\script\Enemy.cs" />
-    <Compile Include="Assets\Boss.cs" />
+    <Compile Include="Assets\BlinkDamage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

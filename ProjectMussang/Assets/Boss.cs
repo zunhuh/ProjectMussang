@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Boss : MonoBehaviour
     public Animator animator;
     public SpriteRenderer sp_renderer;
     public GameObject target;
+    private GameManage gameManage;
     public Door door;
     public float speed;
     float stateTime = 0;
@@ -36,6 +38,7 @@ public class Boss : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManage = GameObject.Find("GameManager").GetComponent<GameManage>();
         State_Start(State.idle);
         target = GameObject.Find("Hero");
 
@@ -43,8 +46,10 @@ public class Boss : MonoBehaviour
 
     void Update()
     {
+        Debug.Log((float)CurHp / MaxHp);
+        Debug.Log(CurHp);
         State_Update();
-
+        gameManage.Boss_hp((float)CurHp / MaxHp);
     }
     public void SetAnim(string s)
     {
@@ -71,36 +76,39 @@ public class Boss : MonoBehaviour
         switch (state)
         {
             case State.idle:
-                Debug.Log(state);
+                stateTime = Time.time + 0.7f;
                 SetAnim("e1_idle");
                 break;
             case State.walk:
-                Debug.Log(state);
-                speed = 4; SetDirection(target.transform.position);
+                speed = 4; 
+                SetDirection(target.transform.position);
                 SetAnim("e1_walk");
                 break;
             case State.rush:
-                stateTime = Time.time + 4.0f;
-                Debug.Log(state);
-                speed = 7; 
+                
+                
+                SetDirection(target.transform.position);
+                speed = 7;
+                stateTime = Time.time + 2.0f;
                 SetAnim("e1_attack");
 
                 break;
             case State.jump:
-                Debug.Log(state);
-                stateTime = Time.time + 2.0f;
-                rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
+                SetDirection(target.transform.position);
+                speed = 3;
+                stateTime = Time.time + 1.5f;
+                rb.AddForce(Vector3.up * 6.5f, ForceMode.Impulse);
                 SetAnim("e1_attack");
                 break;
             case State.hit:
-                CurHp -= _param; if (CurHp <= 0) { State_Start(State.die); break; }
+                CurHp -= _param; 
                 SetAnim("e1_hit"); stateTime = Time.time + 0.5f;
                 break;
             case State.delay:
 
                 break;
             case State.die:
-                door.count_cur += 1; Destroy(this.gameObject);
+                door.count_cur += 1; Destroy(gameObject);
                 break;
         }
     }
@@ -108,26 +116,32 @@ public class Boss : MonoBehaviour
     {
         switch (state)
         {
-            case State.idle:
-                if (Distance() > 7) State_Start(State.rush);
-                if (Distance() < 2) State_Start(State.jump);
-                if (Distance() > 2 && Distance() < 7) State_Start(State.walk);
+            case State.idle: 
+                if (stateTime < Time.time)
+                {
+                    if (Distance() > 4) State_Start(State.rush);
+                    if (Distance() < 2) State_Start(State.jump);
+                    if (Distance() > 2 && Distance() < 7) State_Start(State.walk);
+                }
                 break;
             case State.walk:
                 Move(); if (Distance()<2) State_Start(State.jump);
-                if (Distance() > 7) State_Start(State.rush);
+                if (Distance() > 4) State_Start(State.rush);
                 break;
             case State.rush:
-                Move();  State_Start(State.idle);
+                Move();
+                
                 if (stateTime < Time.time) State_Start(State.idle);
                 
 
                 break;
             case State.jump:
+                Move(); 
                 if (stateTime < Time.time) State_Start(State.idle);
                 break;
             case State.hit:
-
+                if (CurHp <= 0) { State_Start(State.die); }
+                if (stateTime < Time.time) State_Start(State.idle);
                 break;
             case State.delay:
 
@@ -139,9 +153,13 @@ public class Boss : MonoBehaviour
         }
 
     }
-    public void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        
+        if (collision.gameObject.name.Contains("weapon"))
+        {
+            int dag = target.gameObject.GetComponent<Hero>().Attack_Power();
+            State_Start(State.hit, dag);
+        }
     }
 
 }

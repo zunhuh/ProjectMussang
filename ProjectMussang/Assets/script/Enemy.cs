@@ -104,8 +104,10 @@ public class Enemy : MonoBehaviour
 
                 break;
         }
-
     }
+
+  
+
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.name.Contains("weapon"))
