@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\script\HeroStat.cs" />
     <Compile Include="Assets\script\Hero.cs" />
     <Compile Include="Assets\script\ScemeManager.cs" />
     <Compile Include="Assets\script\Door.cs" />
@@ -63,7 +64,7 @@
     <Compile Include="Assets\script\Weapon.cs" />
     <Compile Include="Assets\script\GameManage.cs" />
     <Compile Include="Assets\script\Enemy.cs" />
-    <Compile Include="Assets\script\HeroStat.cs" />
+    <Compile Include="Assets\Boss.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

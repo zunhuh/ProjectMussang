@@ -13,7 +13,7 @@ public partial class Hero : MonoBehaviour
     int atk_boost = 0;
     float atk_boost_time=0;
     public List<int> buff_list = new List<int>();
-    public Image[] buff_slot;
+    public Image[] buff_slot = new Image[4];
     int slot_num =0;
 
 
@@ -38,7 +38,9 @@ public partial class Hero : MonoBehaviour
         slot_num = 0;
         foreach (var item in buff_list)
         {
-            if (item == (int)ItemType.power_potion) buff_slot[slot_num].sprite =Resources.Load<Sprite>("item/item_02");
+            Debug.Log(slot_num);
+            if (item == (int)ItemType.power_potion) 
+                buff_slot[slot_num].sprite = Resources.Load<Sprite>("item/item_02");
             slot_num++;
         }
 

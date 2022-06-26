@@ -36,7 +36,6 @@ public enum Direction
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     void Update()
@@ -46,6 +45,7 @@ public enum Direction
         Attack();
         Jump();
         Stat_Update();
+        
 
         if (state == State.walk || state != State.jump)
         {
