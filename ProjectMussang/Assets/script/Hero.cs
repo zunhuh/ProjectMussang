@@ -126,13 +126,14 @@ public enum Direction
                 if (_state == State.walk) return;
                 if (_state == State.attack) return;
                 if (_state == State.jump) return;
-                if (_state == State.hit) return;
+                
 
                 break;
             case State.hit:
                 if (_state == State.walk) return;
                 if (_state == State.jump) return;
                 if (_state == State.hit) return;
+                if (_state == State.attack) return;
                 break;
         }
         
