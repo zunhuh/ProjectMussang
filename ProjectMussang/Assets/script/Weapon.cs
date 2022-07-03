@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
         sr = this.GetComponent<SpriteRenderer>();
         if (hero.direction == Direction.left) sr.flipX = false;
         else if (hero.direction == Direction.right) sr.flipX = true;
-        Destroy(this.gameObject, 1.5f);
+        Destroy(this.gameObject, 0.5f);
     }
 
     // Update is called once per frame

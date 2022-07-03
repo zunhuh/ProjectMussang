@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameManage : MonoBehaviour
 {
-
+    public Hero hero;
     public Text room_text;
     private int floor;
     private int room;
@@ -18,8 +18,6 @@ public class GameManage : MonoBehaviour
     void Start()
     {
         hp_bar.gameObject.SetActive(false);
-        //보스등장시
-        hp_bar.gameObject.SetActive(true);
 
         floor = 1;
         room = 1;
@@ -33,7 +31,7 @@ public class GameManage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public void Boss_hp(float a)
@@ -75,5 +73,13 @@ public class GameManage : MonoBehaviour
 
 
 
+    }
+    public void RoomChange()
+    {
+        room += 1;
+        hero.transform.Translate(10, 0, 0);
+        //보스HP표시
+        if(room == 2) { hp_bar.gameObject.SetActive(true); }
+       if (room != 2) { hp_bar.gameObject.SetActive(false); }
     }
 }

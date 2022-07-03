@@ -46,8 +46,7 @@ public class Boss : MonoBehaviour
 
     void Update()
     {
-        Debug.Log((float)CurHp / MaxHp);
-        Debug.Log(CurHp);
+       
         State_Update();
         gameManage.Boss_hp((float)CurHp / MaxHp);
     }
@@ -119,7 +118,7 @@ public class Boss : MonoBehaviour
             case State.idle: 
                 if (stateTime < Time.time)
                 {
-                    if (Distance() > 4) State_Start(State.rush);
+                    if (Distance() > 4 && Distance() < 7) State_Start(State.rush);
                     if (Distance() < 2) State_Start(State.jump);
                     if (Distance() > 2 && Distance() < 7) State_Start(State.walk);
                 }

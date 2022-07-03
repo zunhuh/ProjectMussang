@@ -56,6 +56,16 @@ public class Enemy : MonoBehaviour
         if(direction == Direction.left) rb.MovePosition(transform.position + speed * Vector3.left * Time.deltaTime);
         if (direction == Direction.right) rb.MovePosition(transform.position + speed * Vector3.right * Time.deltaTime);
     }
+    public State GetState()
+    {
+        return state;
+
+    
+    }
+    public float Distance()
+    {
+        return Vector3.Distance(transform.position, target.transform.position);
+    }
 
     public void State_Start(State _state, int _param = 0)   //state 변경 //이벤트
     {
@@ -64,15 +74,15 @@ public class Enemy : MonoBehaviour
         {
             case State.idle:
                 SetAnim("e1_idle");
-                break;
+                stateTime = Time.time + 2; break;
             case State.walk:
                 speed = 2; SetDirection(target.transform.position);
                 SetAnim("e1_walk"); 
                 break;
             case State.attack:
                 speed = 5;
-                SetAnim("e1_attack"); 
-                 
+                SetAnim("e1_attack");
+                stateTime = Time.time + 1;
                 break;
             case State.hit:
                 CurHp -= _param; if (CurHp <= 0) { State_Start(State.die); break; }
@@ -88,14 +98,21 @@ public class Enemy : MonoBehaviour
         switch (state)
         {
             case State.idle:
-                if (Vector3.Distance(transform.position, target.transform.position) < 5) State_Start(State.walk);
+                if (stateTime > Time.time) break;
+                if (Distance() < 5) State_Start(State.walk);
                 break;
             case State.walk:
-                 Move(); if (Vector3.Distance(transform.position, target.transform.position) > 5) State_Start(State.idle);
-                if (Vector3.Distance(transform.position, target.transform.position) < 2) State_Start(State.attack);
+                 Move(); 
+                if (Distance() > 5) State_Start(State.idle);
+                if (Distance() < 2) State_Start(State.attack);
                 break;
-            case State.attack:
-                Move(); if (Vector3.Distance(transform.position, target.transform.position) > 3) State_Start(State.idle);
+            case State.attack:                
+                Move();
+                if (Distance() < 1.2f) {
+                    target.GetComponent<Hero>().Damage(atk);
+                    State_Start(State.idle);
+                }  
+                if (stateTime < Time.time) State_Start(State.idle);
                 break;
             case State.hit:
                 if (stateTime < Time.time) State_Start(State.idle);

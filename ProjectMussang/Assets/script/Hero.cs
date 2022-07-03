@@ -46,22 +46,10 @@ public enum Direction
         State_Update();
         Attack();
         Jump();
+        Walk();
         Stat_Update();
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                direction = Direction.left;
-                State_Start(State.walk);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                direction = Direction.right;
-                State_Start(State.walk);
-            }
-            else if (state == State.walk)
-            {
-                State_Start(State.idle);
-            }
+           
     }
 
     void Attack()
@@ -82,27 +70,34 @@ public enum Direction
             State_Start(State.jump);
         }
     }
+    void Walk()
+    {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) State_Start(State.walk);
+    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Move();
     }
     public void Move()
     {
-        if (state != State.walk && state != State.jump ) return;
 
         if (Input.GetKey(KeyCode.A))
         {
             sp_renderer.flipX = true;
             rb.MovePosition(transform.position + speed * Vector3.left * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             sp_renderer.flipX = false;
             rb.MovePosition(transform.position + speed * Vector3.right * Time.deltaTime);
         }
+        else if(state == State.walk)
+        {
+            State_Start(State.idle);
+        }
 
+        
     }
 
     public void SetAnim(string s)
@@ -117,10 +112,12 @@ public enum Direction
             case State.idle:
                 break;
             case State.walk:
+                
                 break;
             case State.jump:
                 if (_state == State.attack) return;
                 if (_state == State.jump) return;
+                if (_state == State.walk) return;
                 break;
             case State.attack:
                 if (_state == State.walk) return;
@@ -152,6 +149,7 @@ public enum Direction
                 SetAnim("Hero_walk");
                 break;
             case State.jump:
+              
                 SetAnim("Hero_jump");
                 rb.AddForce(Vector3.up * jumppower, ForceMode.Impulse);
                 break;
@@ -174,9 +172,12 @@ public enum Direction
         {
             case State.idle:
                 break;
+
             case State.walk:
+                Move();
                 break;
             case State.jump:
+                Move();
                 break;
             case State.attack:
                 if (Time.time > stateTime) State_Start(State.idle);
@@ -187,7 +188,10 @@ public enum Direction
         }
 
     }
-    
+    public void Damage(int i)
+    {
+        State_Start(State.hit,i );
+    }
 
 
 
@@ -196,12 +200,10 @@ public enum Direction
         if(collision.gameObject.name.Contains("ground"))
         {
             State_Start(State.idle);
+            
         }
-        if (collision.gameObject.name.Contains("enemy"))
-        {            
-            int e_atk = collision.gameObject.GetComponent<Enemy>().atk;
-            State_Start(State.hit, e_atk);
-        }
+
+
         if (collision.gameObject.name.Contains("boss1"))
         {
             int e_atk = collision.gameObject.GetComponent<Boss>().atk;

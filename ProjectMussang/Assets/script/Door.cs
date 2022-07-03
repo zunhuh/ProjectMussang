@@ -8,6 +8,8 @@ public class Door: MonoBehaviour
 
     public GameObject enemy;
 
+    public GameManage GameManage;
+
     public Transform[] spawn_pos;
 
 
@@ -23,8 +25,17 @@ public class Door: MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
 
-        if (count_cur == spawn_pos.Length) Destroy(this.gameObject); 
+  
     }
+    public void OnTriggerEnter(Collider other)
+    {
+        if(count_cur == spawn_pos.Length)
+        {
+
+            GameManage.RoomChange();
+        }
+    }
+
 }
