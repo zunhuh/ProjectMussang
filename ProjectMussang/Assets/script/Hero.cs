@@ -18,7 +18,8 @@ public enum Direction
         walk,
         jump,
         attack,
-        hit
+        hit,
+        die
     }
        
 
@@ -34,26 +35,37 @@ public enum Direction
     public Slider hp_bar;
     public BlinkDamage blinkDamage;
 
+    //sound
+    public GameObject A_digitalsound;
+    public GameObject A_die;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-
+        
+        
     }
 
     void Update()
-    {
-        hp_bar.value = (float) CurHp / MaxHp;
-        State_Update();
-        Attack();
-        Jump();
-        Walk();
-        Stat_Update();
+    {   
+       
+        if (GameManage.Instance.isBattle == true)
+        {
+            hp_bar.value = (float)CurHp / MaxHp;
+            State_Update();
+            Attack();
+            Stat_Update();
+            Jump();
+            Walk();
+        }
 
            
     }
 
     void Attack()
-    {
+    {   
 
         if (Input.GetKeyDown(KeyCode.F) )
         {
@@ -132,6 +144,9 @@ public enum Direction
                 if (_state == State.hit) return;
                 if (_state == State.attack) return;
                 break;
+            case State.die:
+                
+                break;
         }
         
 
@@ -154,16 +169,24 @@ public enum Direction
                 rb.AddForce(Vector3.up * jumppower, ForceMode.Impulse);
                 break;
             case State.attack:
-                
+                Instantiate(A_digitalsound);
                 Instantiate(weapon, transform) ;
                 stateTime = Time.time + 1.5f;
                 break;
             case State.hit:
-                blinkDamage.Blink_start();
                 CurHp -= _param;
+                if (CurHp <= 0) State_Start(State.die);
+                blinkDamage.Blink_start();
                 SetAnim("Hero_hit");
                 stateTime = Time.time + 0.5f;
                 break;
+            case State.die:
+                GameManage.Instance.A_bgm.Stop();
+                Instantiate(A_die);
+                Time.timeScale = 0;
+                GameManage.Instance.clearPanel.SetActive(true);
+                break;
+           
         }
     }
     public void State_Update()  //state üũ 
@@ -184,6 +207,8 @@ public enum Direction
                 break;
             case State.hit:
                 if (Time.time > stateTime) State_Start(State.idle);
+                break;
+            case State.die:
                 break;
         }
 

@@ -66,6 +66,10 @@
     <Compile Include="Assets\script\GameManage.cs" />
     <Compile Include="Assets\script\Enemy.cs" />
     <Compile Include="Assets\BlinkDamage.cs" />
+    <Compile Include="Assets\destroy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Resources\ArcadeGameBGM#17\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
